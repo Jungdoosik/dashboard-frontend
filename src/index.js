@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { initKakao } from "kakao-js-sdk";
+initKakao("f441ba91c9a3dc52f5ed1fab65840fcc");
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
