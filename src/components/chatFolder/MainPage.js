@@ -24,11 +24,28 @@ const MainPage = () => {
         })
         .catch((err) => console.error("Failed to fetch user info:", err));
     }
+
+    const googleAccessToken = localStorage.getItem("google_access_token");
+    if (googleAccessToken) {
+      // 구글 로그인 시 userInfo 설정
+      fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${googleAccessToken}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Google User Info:", data);
+          setUserInfo(data);
+        })
+        .catch((err) => console.error("Failed to fetch Google user info:", err));
+    }
   }, []);
 
   const handleLogout = async () => {
     console.log("로그아웃");
     const kakaoAccessToken = localStorage.getItem("kakao_access_token");
+    const googleAccessToken = localStorage.getItem("google_access_token");
     console.log(kakaoAccessToken)
 
     try {
@@ -48,6 +65,11 @@ const MainPage = () => {
         localStorage.removeItem("kakao_access_token");
         // React Router를 사용한 리다이렉트
         navigate("/");
+      } else if (googleAccessToken) {
+        // 구글 로그아웃 처리
+        localStorage.removeItem("google_access_token");
+        setUserInfo(null); // 로그아웃 후 userInfo 초기화
+        navigate("/"); // 로그아웃 후 메인 페이지로 이동
       } else {
         //oauth 로그아웃과 관련없는 로그아웃(그냥 일반사용자가 id입력해서 로그아웃시)
         const appResponse = await fetch(`${url}/user/logout`, {
@@ -74,7 +96,8 @@ const MainPage = () => {
       <h1>메인 페이지</h1>
       {userInfo ? (
         <div>
-          <h2>환영합니다, {userInfo.id}님!</h2>
+          <h2>환영합니다, {userInfo.properties.nickname}님!</h2>
+          <img src={userInfo.properties.profile_image} alt=""></img>
           <Button
             variant="contained"
             color="primary"

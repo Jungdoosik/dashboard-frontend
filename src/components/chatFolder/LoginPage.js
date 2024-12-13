@@ -9,8 +9,7 @@ import {
 import axios from "axios";
 import { getApiUrl } from '../../utils/ApiUrl'
 // import NaverLogin from './loginType/NaverLogin';
-import GoogleAuth from './loginType/GoogleAuth'
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleAuth from './loginType/google/GoogleAuth'
 import KakaoLogin from './loginType/kakao/KakaoLogin';
 
 function ChatMain() {
@@ -77,9 +76,7 @@ function ChatMain() {
             Login
           </Button>
           {/* <NaverLogin /> */}
-          <GoogleOAuthProvider clientId="975393392824-j7nbrg9kjfkt4klj8p27kof777epk8vs.apps.googleusercontent.com" >
-            <GoogleAuth />
-          </GoogleOAuthProvider>
+          <GoogleAuth />
           <KakaoLogin />
         </Box>
       </Container>
